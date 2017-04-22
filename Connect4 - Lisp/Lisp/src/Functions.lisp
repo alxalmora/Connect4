@@ -1,4 +1,5 @@
 ;;Se utiliza la un tablero de 7x6. 6 listas de 7 elementos cada una.
+;;La AI se identifica como 1 y el Jugador como -1, 0 es una posicion libre
 (setq tablero
       '(
         (0 0 0 0 0 0 0)
@@ -199,6 +200,19 @@
 )
 (return-from f_heuristicaTablero suma)
 )
+;;Calcula el costo de cada tablero puntos Maquina - puntos jugador.
+(defun f_heuristica (thisTablero)
+(setq suma (- (f_heuristicaTablero thisTablero 1) (f_heuristicaTablero thisTablero -1)))
+(return-from f_heuristica suma)
+)
+(defun f_max( thisTabA thisTabB player)
+  (if (> (f_heuristica thisTabA player) (f_heuristica thisTabB player)) (return-from f_max thisTabA) (return-from f_max thisTabB) )
+)
+(defun f_min( thisTabA thisTabB player)
+  (if (< (f_heuristica thisTabA player) (f_heuristica thisTabB player)) (return-from f_min thisTabA) (return-from f_min thisTabB) )
+)
+
+
 ;;Debug
 ;;(print  (f_sub4Lines '(0 0 0 0 0 0 0)))
 ;;(print (f_cuentaHorizontal (f_sub4Lines '(0 0 0 0 0 0 0)) 1))
