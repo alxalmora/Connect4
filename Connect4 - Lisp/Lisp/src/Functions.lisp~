@@ -1,5 +1,5 @@
 ;;Se utiliza la un tablero de 7x6. 6 listas de 7 elementos cada una.
-;;La AI se ident ifica como 1 y el Jugador como -1, 0 es una posicion libre
+;;La AI se identifica como 1 y el Jugador como -1, 0 es una posicion libre
 (setq tablero
       '(
         (0 0 0 0 0 0 0)
