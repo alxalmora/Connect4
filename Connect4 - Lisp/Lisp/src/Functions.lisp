@@ -211,7 +211,9 @@
 (defun f_min( thisTabA thisTabB player)
   (if (< (f_heuristica thisTabA player) (f_heuristica thisTabB player)) (return-from f_min thisTabA) (return-from f_min thisTabB) )
 )
-
+(defun f_isValidMove (thisTablero index)
+(if (= 0 (nth index (nth 0 thisTablero))) (return-from f_isValidMove T) (return-from f_isValidMove NIL))
+)
 
 ;;Debug
 ;;(print  (f_sub4Lines '(0 0 0 0 0 0 0)))
