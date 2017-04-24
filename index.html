@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="autor" content="Alex Almora | Miguel Velazquez">
+    <title>Connect4 Minimax - Alpha Beta Pruning</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+        <div class="col-xs-8 col-xs-offset-2">
+          <div class="page-header">
+            <h1>Connect 4<small> Usando Minimax con Alpha-Beta pruning</small></h1>
+          </div>
+          <div class="aboutGame">
+            <h2>Sobre el Juego</h2>
+            <p>Conecta 4 (también conocido como 4 en Linea en algunas versiones) es un juego de mesa para dos jugadores. El objetivo de Conecta 4 es alinear cuatro fichas sobre un tablero formado por seis filas y siete columnas. Por turnos, los jugadores deben introducir una ficha en la columna que prefieran (siempre que no esté completa) y ésta caerá a la posición más baja. Gana la partida el primero que consiga alinear cuatro fichas consecutivas de un mismo color en horizontal, vertical o diagonal.</p>
+            <p>Conecta 4 es un juego de estrategia abstracta donde los contrincantes disponen de información perfecta. Por norma general, el primer jugador tiene más posibilidades de ganar si introduce la primera ficha en la columna central. Si lo hace en las contiguas se puede forzar un empate, mientras que si la mete en las más alejadas del centro su rival puede vencerle con mayor facilidad.</p>
+          </div>
+          <hr>
+          <div class="aboutMinimax">
+            <h2>Sobre el algoritmo Minimax</h2>
+            <h3>Sobre la teoría Minimax</h3>
+            <p>En teoría de juegos, minimax es un método de decisión para minimizar la pérdida máxima esperada en juegos con adversario y con información perfecta. Minimax es un algoritmo recursivo.</p>
+            <p>Recordemos que Connect4 es un juego con información perfecta, es decir, ambos jugadores pueden conocer en cualquier momento el estado del rival y su propio estado.</p>
+            <p>John von Neumann es el creador del teorema minimax, quien dio la siguiente noción de lo que era un juego:</p>
+            <code>Un juego es una situación conflictiva en la que uno debe tomar una decisión sabiendo que los demás también toman decisiones, y que el resultado del conflicto se determina, de algún modo, a partir de todas las decisiones realizadas.</code>
+            <h3>El algoritmo</h3>
+            <p>Pasos del algoritmo minimax:</p>
+            <ul>
+              <li>Generación del árbol de juego. Se generarán todos los nodos hasta llegar a un estado terminal.</li>
+              <li>Cálculo de los valores de la función de utilidad para cada nodo terminal.</li>
+              <li>Calcular el valor de los nodos superiores a partir del valor de los inferiores. Según nivel si es MAX o MIN se elegirán los valores mínimos y máximos representando los movimientos del jugador y del oponente, de ahí el nombre de minimax.</li>
+              <li>Elegir la jugada valorando los valores que han llegado al nivel superior.</li>
+            </ul>
+            <p>El algoritmo explorará los nodos del árbol asignándoles un valor numérico mediante una función de evaluación, empezando por los nodos terminales y subiendo hacia la raíz. La función de utilidad definirá lo buena que es la posición para un jugador cuando la alcanza. </p>
+            <img class="thumb-img"src="img/MinimaxTree.png" alt="Arbol de Minimax">
+            <p>El algoritmo minimax tiene la desventaja de generar tantos nodos por nivel como movimientos validos sean posibles en un juego, causando un gran consumo de memoria al evaluar cada posibilidad. Por ello se debe limitar a un tiempo de ejecucion o a una cantidad de niveles definida, después de 6 niveles en Connect4 la maquina juega bastante bien.</p>
+          </div>
+          <div class="aboutAlphaBeta">
+            <h2>Sobre la optimizacion Alpha-Beta</h2>
+            <p>La poda alfa beta es una técnica de búsqueda que reduce el número de nodos evaluados en un árbol de juego por el algoritmo Minimax. Se trata de una técnica muy utilizada en programas de juegos entre adversarios como el ajedrez, el tres en raya o el Go.</p>
+            <p>La técnica de poda alfa-beta trata de eliminar partes grandes del árbol, aplicándolo a un árbol Minimax estándar, de forma que se devuelva el mismo movimiento que devolvería este, gracias a que la poda de dichas ramas no influye en la decisión final.</p>
+            <img class="thumb-img"src="img/alpha-Beta.png" alt="Arbol de Minimax">
+            <p>La búsqueda minimax es primero en profundidad, por ello en cualquier momento sólo se deben considerar los nodos a lo largo de un camino en el árbol.</p>
+            <p>La poda alfa-beta toma dicho nombre de la utilización de dos parámetros que describen los límites sobre los valores hacia atrás que aparecen a lo largo de cada camino.</p>
+            <ul>
+              <li>α es el valor de la mejor opción hasta el momento a lo largo del camino para MAX, esto implicará por lo tanto la elección del valor más alto.</li>
+              <li>β es el valor de la mejor opción hasta el momento a lo largo del camino para MIN, esto implicará por lo tanto la elección del valor más bajo.</li>
+            </ul>
+            <p>Esta búsqueda alfa-beta va actualizando el valor de los parámetros según se recorre el árbol. El método realizará la poda de las ramas restantes cuando el valor actual que se está examinando sea peor que el valor actual de α o β para MAX o MIN, respectivamente.</p>
+          </div>
+          <div class="aboutProject">
+            <h2>Sobre el desarrollo del proyecto</h2>
+            <h3>Implementación del Algoritmo</h3>
+            <p>Para poder utilizar el Connect4 utilizamos una matriz de 7x6, que utilizaba valores enteros para denominar quien ocupaba la casilla.</p>
+            <ul>
+              <li>1: la casilla estaba ocupada por una ficha de la maquina.</li>
+              <li>0: la casilla estaba libre.</li>
+              <li>-1: la casilla estaba ocupada por una ficha del jugador.</li>
+            </ul>
+            <p>Utilizamos funciones para asignar un valor a cada estado del Tablero. De la siguiente forma se hacia la formula.</p>
+            <ul>
+              <li><code>maq_value = 10*numSet1+100*numSet2+1000*numSet3+100000*numSet4</code></li>
+              <li><code>pla_value = 10*numSet1+100*numSet2+1000*numSet3+100000*numSet4</code></li>
+              <li><code>tab_value = maq_value - pla_value</code></li>
+            </ul>
+            <p>Donde <strong>numSet[x]</strong> indica el numero de subconjuntos de 4 elementos, donde hay exactamente <strong>x</strong> fichas del jugador correspondiente y los elementos restantes son espacios libres</p>
+            <p>Con esta informacion podiamos tomar el valor de cada nodo y utilizar el algoritmo MiniMax y después desarrollar la poda.</p>
+            <hr>
+            <p>Para la poda Alpha-beta</p>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>
