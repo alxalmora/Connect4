@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/master.css">
+
+</script>
   </head>
   <body>
     <div class="container-fluid">
@@ -70,9 +73,25 @@
             <p>Donde <strong>numSet[x]</strong> indica el numero de subconjuntos de 4 elementos, donde hay exactamente <strong>x</strong> fichas del jugador correspondiente y los elementos restantes son espacios libres</p>
             <p>Con esta informacion podiamos tomar el valor de cada nodo y utilizar el algoritmo MiniMax y después desarrollar la poda.</p>
             <hr>
-            <p>Para la poda Alpha-beta</p>
+            <p>Para la poda Alpha-beta usamos funciones para obtener guardar el maximo en la busqueda y el minimo. y así evitar evaluar nodos que no representaban una mejor alternativa</p>
+            <h3>Desarrollo de la GUI</h3>
+            <p>Usando Java Swing programamos la parte visual, usando un grid e imagenes renderizadas en Photoshop, pintamos un tablero para que sea amigable con el usuario</p>
+            <img class="thumb-img"src="img/emptyTab.png" alt="">
+            <img class="thumb-img"src="img/UserTab.png" alt="">
+            <img class="thumb-img"src="img/WinnerTab.png" alt="">
+            <p>El tablero manda mensajes amigables y puede seleccionar al jugador inicial y la dificultad de la AI. La dificultad cambia con la profundidad del arbol, pero tambien el tiempo de procesamiento y la memoria.</p>
+            <p>Para las pruebas se modificó Java para utilizar más memoria y mayor prioridad en el Thread, evitando así Overflows de recursion.</p>
+          </div>
+          <div class="projectProblems">
+            <h2>Problemas en el proyecto</h2>
+            <p>El proyecto tuvo problemas en Common Lisp por el manejo de referencias y apuntadores, por lo que el codigo de Common Lisp tuvo que ser transcrito a Java. La dificultad para editar listas y crear nuevos estados causaba un problema al ejecutarse recursivamente. Las funciones auxiliares de Common Lisp se incluyen en el proyecto.</p>
           </div>
         </div>
     </div>
+    <footer>
+      <p>Segunda Tarea para el curso de Inteligencia Artificial. Se comparte el trabajo con licencia MIT.</p>
+      <p>Alejandro Almora | Miguel Velazquez</p>
+      <p>2017</p>
+    </footer>
   </body>
 </html>
