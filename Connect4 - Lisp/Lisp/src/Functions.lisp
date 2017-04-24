@@ -10,6 +10,12 @@
         (0 0 0 1 -1 -1 0)
         )
 )
+(setq *max-lvl* 3)
+(setq firstMove 3)
+;;Nodo tablero con la informacion del primer movimiento.
+(setq Ntablero
+      (list tablero firstMove) 
+)
 ;; funcion que hace un movimiento con el tablero actual, el indice donde entra la nueva ficha y que 'jugador' tira.
 ;;params: tablero, indice [0-6], player
 (defun f_makeMove (thisTablero index player)
@@ -202,22 +208,56 @@
 )
 ;;Calcula el costo de cada tablero puntos Maquina - puntos jugador.
 (defun f_heuristica (thisTablero)
+(if (= -1 thisTablero) (return-from f_heuristica -100000000)())
+(if(= 1 thisTablero)(return-from f_heuristica 100000000)())
 (setq suma (- (f_heuristicaTablero thisTablero 1) (f_heuristicaTablero thisTablero -1)))
 (return-from f_heuristica suma)
 )
-(defun f_max( thisTabA thisTabB player)
-  (if (> (f_heuristica thisTabA player) (f_heuristica thisTabB player)) (return-from f_max thisTabA) (return-from f_max thisTabB) )
+(defun f_max( thisNTabA thisNTabB)
+  (if (> (f_heuristica (car thisNTabA)) (f_heuristica (car thisNTabB))) (return-from f_max (car thisNTabA)) (return-from f_max (car thisNTabB)) )
 )
-(defun f_min( thisTabA thisTabB player)
-  (if (< (f_heuristica thisTabA player) (f_heuristica thisTabB player)) (return-from f_min thisTabA) (return-from f_min thisTabB) )
+(defun f_min( thisNTabA thisNTabB)
+  (if (< (f_heuristica (car thisNTabA)) (f_heuristica (car thisNTabB))) (return-from f_min (car thisNTabA)) (return-from f_min (car thisNTabB)) )
 )
 (defun f_isValidMove (thisTablero index)
 (if (= 0 (nth index (nth 0 thisTablero))) (return-from f_isValidMove T) (return-from f_isValidMove NIL))
 )
 
+(defun f_minMaxAlphaBeta(thisNTablero nivel alphaNTablero betaNTablero maquinaPlayer)
+(if (> nivel *max-lvl*) (return-from f_minMaxAlphaBeta thisNTablero)())
+(cond
+ ((NOT(NULL maquinaPlayer))
+  (loop
+    for x from 0 to 6
+    do
+    
+     (cond
+      ((f_isValidMove (car thisNTablero) x)
+       (setf alphaNTablero (f_max alphaNTablero (f_minMaxAlphaBeta (list (f_makeMove (car thisNTablero) x 1) x) (+ 1 nivel) alphaNTablero betaNTablero NIL)))
+       )
+     
+    )
+  )
+(return-from f_minMaxAlphaBeta alphaNTablero)
+)
+(T
+(loop
+    for x from 0 to 6
+    do
+     (cond
+      ((f_isValidMove (car thisNTablero) x)
+       (setf betaNTablero (f_min betaNTablero (f_minMaxAlphaBeta (list (f_makeMove (car thisNTablero) x -1) x) (+ 1 nivel) alphaNTablero betaNTablero T) ))
+       )
+    )
+  )
+(return-from f_minMaxAlphaBeta betaNTablero)
+)
+)
+)
 ;;Debug
 ;;(print  (f_sub4Lines '(0 0 0 0 0 0 0)))
 ;;(print (f_cuentaHorizontal (f_sub4Lines '(0 0 0 0 0 0 0)) 1))
 ;;(print (f_cuentaHorizontal (f_sub4Lines (nth 0 tablero)) 1))
 ;;(print (nth 5 tablero))
-(print (f_heuristicaTablero tablero -1))
+;;(print (f_heuristicaTablero tablero -1))
+(print (f_minMaxAlphaBeta Ntablero 0 '(-1) '(1) T))
