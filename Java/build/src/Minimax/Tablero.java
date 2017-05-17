@@ -223,7 +223,7 @@ private int cuentaDiagonal(int player){
                         suma++;
                         break;
                     case 2:
-                        suma+=10;
+                        suma+=30;
                         break;
                     case 3:
                         suma+=3000;

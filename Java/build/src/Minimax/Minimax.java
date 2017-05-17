@@ -26,7 +26,13 @@ public class Minimax {
         this.nodosExp = 0;
     }    
     private Tablero alphaBetaMinimax(Tablero tabActual, int nivel, Tablero alpha, Tablero beta, boolean maquinaPlayer){
-        if(tabActual.isWinner()!=0 || nivel>=maxNivel){
+        if(nivel>=maxNivel){
+            return tabActual;
+        }
+        if(maquinaPlayer && tabActual.isWinner() == 1){
+            return tabActual;
+        }
+        if(!maquinaPlayer && tabActual.isWinner()==-1){
             return tabActual;
         }
         this.nodosExp++;
