@@ -163,14 +163,14 @@ private int cuentaHorizontales(int player){
                         suma++;
                         break;
                     case 2:
-                        suma+=10;
+                        suma+= 100;
                         break;
                     case 3:
-                        suma+=1000;
+                        suma+= 1000;
                         break;
                     case 4:
-                        suma = Integer.MAX_VALUE;
-                        return suma;
+                        suma += 50000;
+                        
                 }
 //                cuantos = cuentaSeguidos(reverse(subSet),player);
 //                switch(cuantos){
@@ -204,8 +204,7 @@ private int cuentaVertical(int player){
                         suma+=1000;
                         break;
                     case 4:
-                        suma = Integer.MAX_VALUE;
-                        return suma;
+                        suma += 50000;
                 }
             }
         }
@@ -227,10 +226,10 @@ private int cuentaDiagonal(int player){
                         suma+=10;
                         break;
                     case 3:
-                        suma+=1000;
+                        suma+=3000;
                         break;
                     case 4:
-                        suma = Integer.MAX_VALUE;
+                        suma += 150000;
                         return suma;
                 }
 //                cuantos = cuentaSeguidos(reverse(list4),player);
