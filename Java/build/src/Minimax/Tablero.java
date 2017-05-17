@@ -17,7 +17,7 @@ public class Tablero implements Cloneable {
     private int[][] tablero;
     private int firstMove;
     private int valor;
-
+    private int isWinner;
     
     public Tablero(int valor){
         this.valor = valor;
@@ -28,6 +28,7 @@ public class Tablero implements Cloneable {
             this.tablero[i] = Arrays.copyOf(tablero[i], 7);
         }
         this.firstMove = firstMove;
+        this.isWinner = 0;
     }
     public int[][] getMatrix(){
         return tablero;
@@ -57,6 +58,7 @@ public class Tablero implements Cloneable {
             System.out.println(Arrays.toString(tablero[i]));  
         }
     }
+    @Override
     public Tablero clone(){
         return new Tablero(tablero,firstMove);
     }
@@ -130,19 +132,22 @@ private int[] reverse(int[] original){
 }
 private int cuentaSeguidos(int[] list4, int player){
     int cuenta =0;
-    if(list4[0]==0 && list4[1]==0){
-        return 0;
-    }
-    if(list4[0]==0){
-        return 0;
-    }
+    //if(list4[0]==0 && list4[1]==0){
+    //    return 0;
+    //}
+    //if(list4[0]==0){
+    //    return 0;
+    //}
     for(int i=0;i<4;i++){
-        if(list4[i]== -1*player){
+        if(list4[i] == -1*player){
             return 0;
         }
-        if(list4[i]==player){
+        if(list4[i] == player){
             cuenta++;
         }
+    }
+    if(cuenta==4){
+        isWinner = player;
     }
     return cuenta;
 }
@@ -161,21 +166,21 @@ private int cuentaHorizontales(int player){
                         suma+=10;
                         break;
                     case 3:
-                        suma+=100;
+                        suma+=1000;
                         break;
                     case 4:
                         suma = Integer.MAX_VALUE;
                         return suma;
                 }
-                cuantos = cuentaSeguidos(reverse(subSet),player);
-                switch(cuantos){
-                    case 1:
-                        suma++;
-                        break;
-                    case 2:
-                        suma+=10;
-                        break;
-                }
+//                cuantos = cuentaSeguidos(reverse(subSet),player);
+//                switch(cuantos){
+//                    case 1:
+//                        suma++;
+//                        break;
+//                    case 2:
+//                        suma+=10;
+//                        break;
+//                }
             }
         }
         return suma;
@@ -196,7 +201,7 @@ private int cuentaVertical(int player){
                         suma+=10;
                         break;
                     case 3:
-                        suma+=100;
+                        suma+=1000;
                         break;
                     case 4:
                         suma = Integer.MAX_VALUE;
@@ -222,21 +227,21 @@ private int cuentaDiagonal(int player){
                         suma+=10;
                         break;
                     case 3:
-                        suma+=100;
+                        suma+=1000;
                         break;
                     case 4:
                         suma = Integer.MAX_VALUE;
                         return suma;
                 }
-                cuantos = cuentaSeguidos(reverse(list4),player);
-                switch(cuantos){
-                    case 1:
-                        suma++;
-                        break;
-                    case 2:
-                        suma+=10;
-                        break;
-                }
+//                cuantos = cuentaSeguidos(reverse(list4),player);
+//                switch(cuantos){
+//                    case 1:
+//                        suma++;
+//                        break;
+//                    case 2:
+//                        suma+=10;
+//                        break;
+//                }
             
         }
     }
@@ -247,130 +252,7 @@ private void valor(){
     int valJugador = cuentaHorizontales(-1)+cuentaVertical(-1)+cuentaDiagonal(-1);
     valor = valMaquina-valJugador;
 }
-    private int cuentaVerticales(int tipo, int serie) {
-        int cuenta = 0;
-        int anterior = 0;
-        for (int columna = 0; columna < 7; columna++) {
-            anterior = 0;
-            for (int renglon = 5; renglon >= 0; renglon--) {
-                if (tablero[renglon][columna] == tipo) {
-                    anterior++;
-                } else if (tablero[renglon][columna] ==-1*tipo) {
-                    anterior = 0;
-                } else if(tablero[renglon][columna]== 0) {
-                        if(serie==anterior){
-                            cuenta++;
-                        }else{
-                            renglon=-1;
-                        }
-                }
-            }
-        }
-        return cuenta;
-    }
-    private int cuentaHorizontales(int tipo, int serie) {
-       int cuenta = 0;
-       for(int i=0;i<6;i++){
-           cuenta+= Funciones.cuentaSeriesLineal(tablero[i], tipo, serie); 
-       }
-       return cuenta;
-    }
- 
-    public int diagonalR( int tipo, int serie) {
-        ArrayList<Integer> list = new ArrayList<>();
-        int f = 6, c = 7, i = 0, j = 0, flag1 = 1, cuenta = 0;
-        i = flag1;
-
-        while (i < f) {
-            while (i >= 0) {
-                list.add(tablero[i][j]);
-                i--;
-                j++;
-            }
-            if (list.size() >= 4) {
-                cuenta += Funciones.cuentaSeriesLineal(Funciones.listToArray(list), tipo, serie);
-            }
-            list.clear();
-            flag1++;
-            i = flag1;
-            j = 0;
-        }
-        int flag2 = 0;
-        int flag3 = 1;
-        i = 5;
-        j = flag3;
-        while (flag2 <= 5) {
-            while (i >= flag2) {
-                list.add(tablero[i][j]);
-                i--;
-                j++;
-            }
-            if (list.size() >= 4) {
-                cuenta += Funciones.cuentaSeriesLineal(Funciones.listToArray(list), tipo, serie);
-            }
-            list.clear();
-            flag2++;
-            flag3++;
-            j = flag3;
-            i = 5;
-        }
-        
-        return cuenta;
-    }
-
-    public int diagonalL(int tipo, int serie) {
-
-        ArrayList<Integer> list = new ArrayList<>();
-        int f = 6, c = 7, i = 0, j = 0, flag1 = 4, cuenta = 0;
-        i = flag1;
-
-        while (flag1 >= 0) {
-            while (i <= 5) {
-                list.add(tablero[i][j]);
-                i++;
-                j++;
-            }
-            if (list.size() >= 4) {
-                cuenta += Funciones.cuentaSeriesLineal(Funciones.listToArray(list), tipo, serie);
-            }
-            list.clear();
-            flag1--;
-            i = flag1;
-            j = 0;
-        }
-        int flag2 = 5;
-        int flag3 = 1;
-        i = 0;
-        j = flag3;
-        while (flag2 >= 0) {
-            while (i <= flag2) {
-                list.add(tablero[i][j]);
-                i++;
-                j++;
-            }
-            if (list.size() >= 4) {
-                cuenta += Funciones.cuentaSeriesLineal(Funciones.listToArray(list), tipo, serie);
-            }
-            list.clear();
-            flag2--;
-            flag3++;
-            j = flag3;
-            i = 0;
-        }
-        return cuenta;
-    }
-    
-    public int cuentaDiagonal (int tipo, int serie){
-        return diagonalR(tipo,serie)+diagonalL(tipo,serie);
-    }
-    public int isWinner(){
-        if(cuentaVerticales(1,4)>=1 || cuentaHorizontales(1,4)>=1 || cuentaDiagonal(1,4)>=1){
-            return 1;
-        }else if(cuentaVerticales(-1,4)>=1 || cuentaHorizontales(-1,4)>=1 || cuentaDiagonal(-1,4)>=1){
-            return -1;
-        }
-        else{
-            return 0;
-        }
+public int isWinner(){
+        return isWinner;
     }
 }

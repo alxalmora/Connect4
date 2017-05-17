@@ -4,15 +4,12 @@
  * and open the template in the editor.
  */
 package Minimax;
-
-import java.util.Arrays;
-
 /**
  *
  * @author AlexAlmora
  */
 public class Minimax {
-
+    private int nodosExp;
     private  Tablero tablero;
     private final int maxNivel;
     private final boolean iniciaMaquina;
@@ -26,72 +23,41 @@ public class Minimax {
         this.maxNivel = nivel;
         this.iniciaMaquina = iniciaMaquina;
         this.movimientos=0;
-    }
-
-    private Tablero getMaximized(Tablero tabActual, int nivel, Tablero beta) {
-        if (nivel < maxNivel) {
-            Tablero maximo = beta;
-            for (int i = 0; i < 7; i++) {
-                if (tabActual.isValidMove(i)) {
-                    Tablero tabAux = tabActual.clone();
-                    tabAux.makeMove(i, 1);
-                    maximo = Funciones.max(maximo, getMinimized(tabAux, nivel + 1,maximo));
-                }
-                if(beta.getValor() <= maximo.getValor()){
-                break;
-            }
-            }
-            return maximo;
-        } else {
-            return tabActual;
-        }
-    }
-    private Tablero getMinimized(Tablero tabActual, int nivel, Tablero alpha) {
-        if (nivel < maxNivel) {
-            Tablero minimo = alpha;
-            for (int i = 0; i < 7; i++) {
-                if (tabActual.isValidMove(i)) {
-                    Tablero tabAux = tabActual.clone();
-                    tabAux.makeMove(i, -1);
-                    minimo = Funciones.min(minimo, getMaximized(tabAux, nivel + 1,minimo));
-                }
-                if(minimo.getValor()<=alpha.getValor()){
-                    break;
-                }
-            }
-            return minimo;
-        } else {
-            return tabActual;
-        }
-    }
-    
+        this.nodosExp = 0;
+    }    
     private Tablero alphaBetaMinimax(Tablero tabActual, int nivel, Tablero alpha, Tablero beta, boolean maquinaPlayer){
+        this.nodosExp++;
         if(tabActual.isWinner()==1 || nivel>=maxNivel){
             return tabActual;
         }
         if(maquinaPlayer){
+            Tablero v = new Tablero(Integer.MIN_VALUE);
             for(int i=0;i<7;i++){
                  Tablero tabAux = tabActual.clone();
                  tabAux.makeMove(i,1);
-                alpha = Funciones.max(alpha,alphaBetaMinimax(tabAux,nivel+1,alpha,beta,false));
+                v = Funciones.max(v,alphaBetaMinimax(tabAux,nivel+1,alpha,beta,false));
+                alpha = Funciones.max(alpha, v);
                 if(beta.getValor()<=alpha.getValor()){
                     break;
                 }
             }
-            return alpha;
+            return v;
         }else{
+            Tablero v = new Tablero(Integer.MAX_VALUE);
             for(int i=0;i<7;i++){
                 Tablero tabAux = tabActual.clone();
-                 tabAux.makeMove(i,-1);
-                beta = Funciones.min(beta,alphaBetaMinimax(tabAux,nivel+1,alpha,beta,true));
+                tabAux.makeMove(i,-1);
+                v = Funciones.min(v,alphaBetaMinimax(tabAux,nivel+1,alpha,beta,true));
+                beta = Funciones.min(v, beta);
                 if(beta.getValor()<=alpha.getValor()){
                     break;
                 }
             }
-            return beta;
+            return v;
         }
     }
     public int playGame(){
+        this.nodosExp=0;
         if(iniciaMaquina&&movimientos==0){
             tablero.makeMove(3,1);
             movimientos++;
@@ -105,6 +71,7 @@ public class Minimax {
                     maximo = Funciones.max(maximo,alphaBetaMinimax(tabAux,0,new Tablero(Integer.MIN_VALUE),new Tablero(Integer.MAX_VALUE),false));
                 }
             }
+            System.out.println("Se expandieron: "+this.nodosExp+" nodos");
             tablero.makeMove(maximo.getFirstMove(),1);
             //tablero.testPrint();
             //System.out.println("======================");

@@ -375,11 +375,9 @@ pulsaBoton(Integer.parseInt(bSiete.getText())-1);
         bSiete.setEnabled(flag);
     }
     private void pulsaBoton(int n){
-        System.out.println("==========Inicia Jugador==============");
         if (juego.playerMove(n)) {
             printTable(n, -1);
             if (!this.isGameEnd()) {
-                System.out.println("============Inicia Maquina============");
                 printTable(juego.playGame(), 1);
             }
             if (this.isGameEnd()) {
