@@ -229,8 +229,7 @@ private int cuentaDiagonal(int player){
                         suma+=3000;
                         break;
                     case 4:
-                        suma += 150000;
-                        return suma;
+                        suma += 50000;
                 }
 //                cuantos = cuentaSeguidos(reverse(list4),player);
 //                switch(cuantos){
